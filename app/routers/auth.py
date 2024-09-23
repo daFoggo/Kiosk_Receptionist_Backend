@@ -1,4 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 from .. import models, schemas, security
 from ..database import SessionLocal
@@ -12,6 +14,27 @@ def get_db():
         yield db
     finally:
         db.close()
+
+def verify_token(token: str, db: Session = Depends(get_db)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Chứng chỉ không hợp lệ",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    
+    try:
+        payload = jwt.decode(token, security.SECRET_KEY, algorithms=[security.ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+    
+    db_user = db.query(models.User).filter(models.User.username == username).first()
+    if db_user is None:
+        raise credentials_exception
+    return db_user
+
 
 @router.post("/api/login", response_model=schemas.Token)
 def login(user: schemas.UserCreate, db: Session = Depends(get_db)):
