@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import auth
+from .routers import auth, event
 from .database import engine, Base
+import logging
 
 Base.metadata.create_all(bind=engine)
 
@@ -17,5 +18,13 @@ app.add_middleware(
     allow_headers=["*"],  
 )
 
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    logging.info(f"Received request: {request.method} {request.url}")
+    response = await call_next(request)
+    return response
+
 
 app.include_router(auth.router)
+app.include_router(event.router)
+

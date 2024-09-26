@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from datetime import datetime, timedelta
+from typing import Optional
 
 class UserCreate(BaseModel):
     username: str
@@ -14,3 +16,20 @@ class UserOut(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+class EventCreate(BaseModel):
+    title: str
+    date: datetime
+    duration: Optional[timedelta] = None
+    location: str
+    
+class EventOut(BaseModel):
+    id: int
+    title: str
+    date: datetime
+    duration: timedelta
+    location: str
+    
+    class Config:
+        orm_mode = True
+        
