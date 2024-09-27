@@ -12,9 +12,9 @@ class Event(Base):
     __tablename__ = "events"
     
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    date = Column(DateTime)
-    duration = Column(Interval)
+    name = Column(String, index=True)
+    start_time = Column(DateTime)
+    end_time = Column(DateTime)
     location = Column(String)
     
     

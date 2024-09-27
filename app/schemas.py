@@ -18,16 +18,16 @@ class Token(BaseModel):
     token_type: str
 
 class EventCreate(BaseModel):
-    title: str
-    date: datetime
-    duration: Optional[timedelta] = None
+    name: str
+    start_time: Optional[datetime] = None
+    end_time: Optional[datetime] = None
     location: str
     
 class EventOut(BaseModel):
     id: int
-    title: str
-    date: datetime
-    duration: timedelta
+    name: str
+    start_time: Optional[datetime] = None
+    end_time: Optional[datetime] = None
     location: str
     
     class Config:
