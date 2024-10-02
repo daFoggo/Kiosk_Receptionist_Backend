@@ -1,6 +1,9 @@
-from sqlalchemy import Column, Integer, String, DateTime, Interval
+from typing import Optional
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, JSON
+from sqlalchemy.orm import relationship
 from .database import Base
 
+# authentication
 class User(Base):
     __tablename__ = "users"
 
@@ -8,6 +11,7 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     password = Column(String)
 
+# event manage
 class Event(Base):
     __tablename__ = "events"
     
@@ -17,4 +21,4 @@ class Event(Base):
     end_time = Column(DateTime)
     location = Column(String)
     
-    
+# telegram bot

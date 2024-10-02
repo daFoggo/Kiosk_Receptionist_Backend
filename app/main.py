@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import auth, event
+from app.routers import auth, event, telebot
 from .database import engine, Base
 import logging
 
@@ -27,4 +27,5 @@ async def log_requests(request: Request, call_next):
 
 app.include_router(auth.router)
 app.include_router(event.router)
+app.include_router(telebot.router)
 
