@@ -44,6 +44,7 @@ class CCCDInfo(BaseModel):
 
 class ContactCreate(BaseModel):
     isAppointment: bool
+    appointmentTime: str
     department: str
     phoneNumber: str
     note: str

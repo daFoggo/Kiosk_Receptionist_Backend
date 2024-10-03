@@ -54,10 +54,12 @@ async def create_contact(contact: ContactCreate):
 - Ngày sinh: {contact.cccdInfo.dob}
 - Giới tính: {contact.cccdInfo.gender}
 
-📞 *Thông tin liên hệ:*
-- Số điện thoại: {contact.phoneNumber}
-- Phòng ban: {contact.department}
+📞 *Bên cần liên hệ:*
 - Có lịch hẹn: {'Có' if contact.isAppointment else 'Không'}
+- Thời gian hẹn: {contact.appointmentTime}
+- Số điện thoại: {contact.phoneNumber}
+- Phòng ban: {convertDepartment(contact.department)}
+
 
 📝 *Ghi chú:* {contact.note}
         """
@@ -67,3 +69,25 @@ async def create_contact(contact: ContactCreate):
         return {"status": "success", "message": "Đã gửi thông tin thành công"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+def convertDepartment(department: str):
+    if department == "bld":
+        return "Ban lãnh đạo"
+    elif department == "phongTh":
+        return "Phòng tổng hợp"
+    elif department == "phongKhcnvkhcd":
+        return "Phòng Khoa học công nghệ và Kế hoạch kinh doanh"
+    elif department == "phongTvtk":
+        return "Phòng tư vấn thiết kế"
+    elif department == "phongNckyvdvvt":
+        return "Phòng nghiên cứu kỹ thuật và dịch vụ viễn thông"
+    elif department == "phongDlkdvtccl":
+        return "Phòng đo lường kiểm định và tiêu chuẩn chất lượng"
+    elif department == "phongUdvcgcns":
+        return "Phòng ứng dụng và chuyển giao công nghệ số"
+    elif department == "phongNcptcns":
+        return "Phòng nghiên cứu phát triển công nghệ số"
+    elif department == "cs2":
+        return "Cơ sở 2 của Viện tại TP.Hồ Chí Minh"
+    else:
+        return "Không xác định"
